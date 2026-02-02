@@ -8,8 +8,10 @@ It demonstrates how **CSV-based stock snapshots, supplier and item history docum
 **2. Purchase Request Document** — grouped by supplier for approval workflows  
 **3. Supplier Email Drafts** — external communication requesting timelines or availability
 
-**Link**: https://soominmyung.com/purchasing-automation
+## Interactive Demo: Manual Context Upload
+**Note:** For this demonstration, context files must be uploaded manually. In the production environment, data is automatically retrieved from the internal database.
 
+**Link**: https://soominmyung.com/purchasing-automation
 
 ![Purchasing_AI](https://github.com/user-attachments/assets/d2770c1e-c08a-4341-8dee-86885387ae71)
 
