@@ -51,6 +51,7 @@ Designed specifically for serverless/ephemeral environments like Hugging Face Sp
 * **utils/**: Utilities (CSV Parsing, PDF Extraction, Word Generation)
 * **schemas.py**: Data Models & Validation (Pydantic)
 * **config.py**: Environment Variables & System Settings
+* **docs/**: Sample documents for testing
 
 ---
 
