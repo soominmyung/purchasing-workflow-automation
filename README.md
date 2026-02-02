@@ -10,6 +10,9 @@ It demonstrates how **CSV-based stock snapshots, supplier and item history docum
 
 **Link**: https://soominmyung.com/purchasing-automation
 
+
+![Purchasing_AI](https://github.com/user-attachments/assets/d2770c1e-c08a-4341-8dee-86885387ae71)
+
 ---
 
 ## Tech Stack
