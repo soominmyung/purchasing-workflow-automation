@@ -73,15 +73,3 @@ Implemented a robust security layer to prevent API abuse and cost overruns:
 * **POST /api/ingest/{type}/zip**: Batch-learn historical documents via ZIP upload.
 * **GET /api/output/download**: Download generated reports and email drafts.
 
----
-
-## Configuration & Deployment
-
-To deploy on Hugging Face Spaces or your own server, set the following **Secrets/Environment Variables**:
-
-| Variable | Description |
-| :--- | :--- |
-| `OPENAI_API_KEY` | Your OpenAI API secret key. |
-| `API_ACCESS_TOKEN` | A secret token for backend authentication (sent in `X-API-Key` header). |
-| `RATE_LIMIT_PER_DAY` | Maximum allowed heavy requests per IP per day (default: 5). |
-
