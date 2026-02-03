@@ -27,6 +27,9 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# --- 보안 및 사용량 제한 (Rate Limiting) ---
+# services/security.py 로 이동됨.
+
 _cors_origins = ["http://localhost:5173", "http://127.0.0.1:5173"]
 if settings.extra_cors_origins:
     _cors_origins = _cors_origins + [o.strip() for o in settings.extra_cors_origins.split(",") if o.strip()]

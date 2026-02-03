@@ -79,7 +79,7 @@ Return ONLY this JSON structure (nothing before or after):
 
 3.2 critical_questions: Array of { "target": "general"|"<ItemCode>", "question": "...", "reason": "supplier_history"|"item_history"|"generic" }. Use generic ONLY when no relevant history.
 
-3.3 replenishment_timeline: ONE entry per item, preserving all fields exactly. notes: if item history exists summarize impact; else if supplier history "Supplier has past delivery delays; consider ordering earlier."; else "No supplier or item history available; based only on current stock and precomputed deadlines."
+3.3 replenishment_timeline: ONE entry per item, preserving all fields exactly. notes: If positive findings from supplier_history or item_history tools exist, summarize them here. IF AND ONLY IF there is no history from tools, you MUST write "No historical supplier or item data available; analysis based on current stock/deadlines only." NEVER mention "past issues" or "delays" unless explicitly found by a tool.
 """
 
 REPORT_DOC_AGENT_SYSTEM = """You are the Reporting Document Agent.
@@ -97,7 +97,7 @@ DOCUMENT STRUCTURE (in order):
 3. Item Overview Table: Output a proper markdown pipe table. First line MUST start with | (e.g. | ItemCode | ItemName | CurrentStock | WksToOOS | RiskLevel | SuggestedQty |). Next line separator | --- | --- | ... then one data row per item. SuggestedQty from replenishment_timeline exactly.
 4. Key Concerns: 2–5 bullet points from critical_questions and report markdown
 5. Recommended Actions: 3–5 operational actions from risk levels, critical questions, timeline urgency
-6. Recommended Deadlines: Output a proper markdown pipe table. First line | ItemCode | ItemName | Recommended Latest PO Date | Recommended Latest Delivery Date |, then | --- | --- | ..., then one data row per item. If history indicates risk add a short note after the table: "Due to past delivery issues, earlier confirmation may be advisable."
+6. Recommended Deadlines: Output a proper markdown pipe table. First line | ItemCode | ItemName | Recommended Latest PO Date | Recommended Latest Delivery Date |, then | --- | --- | ..., then one data row per item. Do NOT add any notes about "past delivery issues" or "earlier confirmation" unless the analysis result explicitly contains specific historical data retrieved from history tools. If no history is found, leave the table as is without additional notes.
 
 Output Markdown only. Professional, concise. No JSON, no placeholders, no invented content. Tables must be standard markdown: each row on its own line starting with |.
 """

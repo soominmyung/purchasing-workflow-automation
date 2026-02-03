@@ -8,7 +8,8 @@ import tempfile
 import zipfile
 from pathlib import Path
 
-from fastapi import APIRouter, File, UploadFile, HTTPException
+from fastapi import APIRouter, File, UploadFile, HTTPException, Depends
+from services.security import verify_api_access
 
 from utils.pdf_utils import extract_text_from_pdf
 from services.vector_store import (
@@ -52,7 +53,7 @@ def _extract_pdfs_from_zip(zip_content: bytes) -> list[tuple[bytes, str]]:
     return pdfs
 
 
-@router.post("/supplier-history")
+@router.post("/supplier-history", dependencies=[Depends(verify_api_access)])
 async def ingest_supplier_history_pdf(
     files: list[UploadFile] = File(..., description="PDF 파일 여러 개 (폴더에서 다 선택 후 업로드 가능)"),
 ):
@@ -78,7 +79,7 @@ async def ingest_supplier_history_pdf(
     return {"ok": True, "processed": len(results), "results": results}
 
 
-@router.post("/supplier-history/zip")
+@router.post("/supplier-history/zip", dependencies=[Depends(verify_api_access)])
 async def ingest_supplier_history_zip(
     file: UploadFile = File(..., description="ZIP 파일 (폴더 압축, 내부 PDF 전부 처리). 100개면 1번 업로드."),
 ):
@@ -104,7 +105,7 @@ async def ingest_supplier_history_zip(
     return {"ok": True, "processed": len(results), "results": results}
 
 
-@router.post("/item-history")
+@router.post("/item-history", dependencies=[Depends(verify_api_access)])
 async def ingest_item_history_pdf(
     files: list[UploadFile] = File(..., description="PDF 파일 여러 개 (폴더에서 다 선택 후 업로드 가능)"),
 ):
@@ -130,7 +131,7 @@ async def ingest_item_history_pdf(
     return {"ok": True, "processed": len(results), "results": results}
 
 
-@router.post("/item-history/zip")
+@router.post("/item-history/zip", dependencies=[Depends(verify_api_access)])
 async def ingest_item_history_zip(
     file: UploadFile = File(..., description="ZIP 파일 (폴더 압축, 내부 PDF 전부 처리). 100개면 1번 업로드."),
 ):
@@ -156,7 +157,7 @@ async def ingest_item_history_zip(
     return {"ok": True, "processed": len(results), "results": results}
 
 
-@router.post("/analysis-examples")
+@router.post("/analysis-examples", dependencies=[Depends(verify_api_access)])
 async def ingest_analysis_examples_pdf(
     files: list[UploadFile] = File(..., description="PDF 파일 여러 개 (폴더에서 다 선택 후 업로드 가능)"),
 ):
@@ -181,7 +182,7 @@ async def ingest_analysis_examples_pdf(
     return {"ok": True, "store": "analysis_examples", "processed": len(results), "results": results}
 
 
-@router.post("/analysis-examples/zip")
+@router.post("/analysis-examples/zip", dependencies=[Depends(verify_api_access)])
 async def ingest_analysis_examples_zip(
     file: UploadFile = File(..., description="ZIP 파일 (폴더 압축, 내부 PDF 전부 처리). 100개면 1번 업로드."),
 ):
@@ -206,7 +207,7 @@ async def ingest_analysis_examples_zip(
     return {"ok": True, "store": "analysis_examples", "processed": len(results), "results": results}
 
 
-@router.post("/request-examples")
+@router.post("/request-examples", dependencies=[Depends(verify_api_access)])
 async def ingest_request_examples_pdf(
     files: list[UploadFile] = File(..., description="PDF 파일 여러 개 (폴더에서 다 선택 후 업로드 가능)"),
 ):
@@ -231,7 +232,7 @@ async def ingest_request_examples_pdf(
     return {"ok": True, "store": "request_examples", "processed": len(results), "results": results}
 
 
-@router.post("/request-examples/zip")
+@router.post("/request-examples/zip", dependencies=[Depends(verify_api_access)])
 async def ingest_request_examples_zip(
     file: UploadFile = File(..., description="ZIP 파일 (폴더 압축, 내부 PDF 전부 처리). 100개면 1번 업로드."),
 ):
@@ -256,7 +257,7 @@ async def ingest_request_examples_zip(
     return {"ok": True, "store": "request_examples", "processed": len(results), "results": results}
 
 
-@router.post("/email-examples")
+@router.post("/email-examples", dependencies=[Depends(verify_api_access)])
 async def ingest_email_examples_pdf(
     files: list[UploadFile] = File(..., description="PDF 파일 여러 개 (폴더에서 다 선택 후 업로드 가능)"),
 ):
@@ -281,7 +282,7 @@ async def ingest_email_examples_pdf(
     return {"ok": True, "store": "email_examples", "processed": len(results), "results": results}
 
 
-@router.post("/email-examples/zip")
+@router.post("/email-examples/zip", dependencies=[Depends(verify_api_access)])
 async def ingest_email_examples_zip(
     file: UploadFile = File(..., description="ZIP 파일 (폴더 압축, 내부 PDF 전부 처리). 100개면 1번 업로드."),
 ):

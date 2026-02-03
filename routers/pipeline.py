@@ -9,9 +9,10 @@ import queue
 from pathlib import Path
 from typing import Any, Callable
 
-from fastapi import APIRouter, File, HTTPException, UploadFile
+from fastapi import APIRouter, File, HTTPException, UploadFile, Depends
 from fastapi.responses import StreamingResponse
 
+from services.security import verify_api_access
 from config import settings
 from schemas import RunPipelineRequest, RunPipelineResponse
 from utils.csv_utils import parse_csv_rows
@@ -204,7 +205,7 @@ def _read_file_base64(path_str: str) -> str | None:
         return None
 
 
-@router.post("/run", response_model=RunPipelineResponse)
+@router.post("/run", response_model=RunPipelineResponse, dependencies=[Depends(verify_api_access)])
 async def run_pipeline_upload(file: UploadFile = File(..., description="CSV 파일 (내용은 서버에서 읽음)")):
     """
     CSV **파일**만 업로드하면 서버가 내용을 읽어 파이프라인 실행.
@@ -226,7 +227,7 @@ async def run_pipeline_upload(file: UploadFile = File(..., description="CSV 파�
     return _run_pipeline(csv_content, csv_filename, progress_callback=None, embed_files=True)
 
 
-@router.post("/run/embed", response_model=RunPipelineResponse)
+@router.post("/run/embed", response_model=RunPipelineResponse, dependencies=[Depends(verify_api_access)])
 async def run_pipeline_embed(file: UploadFile = File(..., description="CSV 파일 (디스크 저장 없이 JSON에 base64 포함)")):
     """
     CSV 업로드 후 파이프라인 실행. **디스크에 저장하지 않고** 생성된 .docx를 base64로 JSON에 담아 반환.
@@ -280,7 +281,7 @@ async def _stream_pipeline_events(csv_content: str, csv_filename: str):
     await task
 
 
-@router.post("/run/stream")
+@router.post("/run/stream", dependencies=[Depends(verify_api_access)])
 async def run_pipeline_stream(file: UploadFile = File(..., description="CSV 파일 (진행 상황 스트리밍)")):
     """
     CSV 업로드 후 파이프라인 실행. 진행 단계를 Server-Sent Events로 스트리밍.
@@ -307,7 +308,7 @@ async def run_pipeline_stream(file: UploadFile = File(..., description="CSV 파�
     )
 
 
-@router.post("/run/json", response_model=RunPipelineResponse)
+@router.post("/run/json", response_model=RunPipelineResponse, dependencies=[Depends(verify_api_access)])
 def run_pipeline_json(req: RunPipelineRequest):
     """
     JSON으로 CSV 내용 + 파일명 전달 (API/스크립트용).

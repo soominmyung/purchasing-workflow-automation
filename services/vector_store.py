@@ -23,18 +23,25 @@ _embeddings = None
 def _get_embeddings():
     global _embeddings
     if _embeddings is None:
+        if not settings.openai_api_key:
+            # 설정되지 않은 경우 오류를 내지 않고 None 반환 (나중에 호출 시 에러 발생)
+            return None
         _embeddings = OpenAIEmbeddings(api_key=settings.openai_api_key)
     return _embeddings
 
 
 def _get_or_create_store(collection_name: str) -> Chroma:
     if collection_name not in _stores:
+        emb = _get_embeddings()
+        if emb is None:
+            # 키가 없으면 스토어 생성을 건너뜀 (나중에 다시 시도 가능)
+            return None
         _stores[collection_name] = Chroma(
             collection_name=collection_name,
-            embedding_function=_get_embeddings(),
+            embedding_function=emb,
             persist_directory=str(_CHROMA_DIR),
         )
-    return _stores[collection_name]
+    return _stores.get(collection_name)
 
 
 def get_vector_stores() -> dict[str, Chroma]:
