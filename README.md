@@ -8,7 +8,6 @@ It demonstrates how **CSV-based stock snapshots, supplier and item history docum
 **2. Purchase Request Document** — grouped by supplier for approval workflows  
 **3. Supplier Email Drafts** — external communication requesting timelines or availability
 
-**Link**: https://soominmyung.com/purchasing-automation
 ## Interactive Demo: Manual Context Upload
 **Note:** For this demonstration, context files must be uploaded manually. In the production environment, data is automatically retrieved from the internal database.
 
@@ -66,3 +65,4 @@ Designed specifically for serverless/ephemeral environments like Hugging Face Sp
 * **POST /api/run/stream**: Upload inventory CSV and execute real-time streaming analysis.
 * **POST /api/ingest/{type}/zip**: Batch-learn historical documents via ZIP upload.
 * **GET /api/output/download**: Download generated reports and email drafts.
+
